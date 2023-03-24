@@ -1,1 +1,1 @@
-# Laravel project: follow movies REST API (JWT)
+## Laravel project: REST API (JWT) - Follow movies
