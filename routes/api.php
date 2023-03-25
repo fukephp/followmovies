@@ -18,8 +18,3 @@ use Illuminate\Support\Facades\Route;
 // Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 //     return $request->user();
 // });
-
-Route::get('/rapid-api', function(Request $request) {
-    $rapidClient = new RapidApiClient();
-    return $rapidClient->setupClient();
-});
