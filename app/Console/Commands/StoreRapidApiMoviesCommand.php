@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands;
 
+use App\Models\Movie;
 use App\RapidApi\Api\MoviesDatabase;
 use Illuminate\Console\Command;
 
@@ -58,20 +59,31 @@ class StoreRapidApiMoviesCommand extends Command
         {
             $response = new MoviesDatabase('/titles', $searchParams);
 
-            $getResponseJson = $response->getJson();
+            $responseRecords = $response->getJson();
 
+            $this->insertRecords($responseRecords);
+
+            $this->info("All movies(limit: {$limit}) are stored to DB!");
+        }
+    }
+
+    protected function insertRecords($responseRecords)
+    {
+        if(!empty($responseRecords['results'])) {
             $data = [];
-            if(!empty($getResponseJson['results'])) {
-                foreach($getResponseJson['results'] as $key => $result) {
-                    $data[$key]['image'] = !is_null($result['primaryImage']) ? $result['primaryImage']['url'] : '';
-                    $data[$key]['title'] = $result['titleText']['text'];
-                    $data[$key]['description'] = !is_null($result['primaryImage']) ? $result['primaryImage']['caption'] : '';
-                    $movieRatings = new MoviesDatabase('/titles' . '/' . $result['id'] . '/ratings');
-                    $data[$key]['rating'] = !empty($movieRatings['results']) ? $movieRatings['results']['averageRating'] : 0.0;
-                    $data[$key]['vote_count'] = !empty($movieRatings['results']) ? $movieRatings['results']['numVotes'] : 0;
-                    $data[$key]['released_at'] = $result['releaseDate']['day'] . '-' . $result['releaseDate']['month'] . $result['releaseDate']['year']; // d-m-Y
-                }
+            foreach($responseRecords['results'] as $key => $result) {
+                $data[$key]['image_url'] = !is_null($result['primaryImage']) ? $result['primaryImage']['url'] : '';
+                $data[$key]['title'] = $result['titleText']['text'];
+                $data[$key]['caption'] = !is_null($result['primaryImage']) ? $result['primaryImage']['caption']['plainText'] : '';
+
+                $movieRatings = new MoviesDatabase('/titles' . '/' . $result['id'] . '/ratings');
+                $movieRatings = $movieRatings->getJson();
+                $data[$key]['rating'] = !empty($movieRatings['results']) ? $movieRatings['results']['averageRating'] : 0.0;
+                $data[$key]['vote_count'] = !empty($movieRatings['results']) ? $movieRatings['results']['numVotes'] : 0;
+                $data[$key]['released_at'] = $result['releaseDate']['year'] . '-' . $result['releaseDate']['month'] . '-' . $result['releaseDate']['day'];
             }
+
+            Movie::insert($data);
         }
     }
 
