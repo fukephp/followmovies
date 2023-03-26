@@ -4,6 +4,7 @@ namespace App\RapidApi;
 
 use GuzzleHttp\Middleware;
 use Illuminate\Http\Client\Response;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Http;
 use Psr\Http\Message\RequestInterface;
 
@@ -18,14 +19,19 @@ class RapidApiClient
         $this->clientResponse = $response;
     }
 
-    public function getResponse()
+    public function getResponse(): Response
     {
         return $this->clientResponse;
     }
 
-    public function getJsonResponse(): array
+    public function getJson(): array
     {
         return $this->clientResponse->json();
+    }
+
+    public function getCollection(): Collection
+    {
+        return $this->clientResponse->collect();
     }
 
     protected function httpClient($host, $url, $params): Response

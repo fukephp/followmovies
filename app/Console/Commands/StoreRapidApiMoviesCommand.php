@@ -56,11 +56,22 @@ class StoreRapidApiMoviesCommand extends Command
 
         if($this->confirm('Proceed with fetching movies', true))
         {
-            $result = new MoviesDatabase($searchParams);
+            $response = new MoviesDatabase('/titles', $searchParams);
 
-            $data = $result->resultCollection();
+            $getResponseJson = $response->getJson();
 
-            // $this->previewTable($data, 'Preview table result.');
+            $data = [];
+            if(!empty($getResponseJson['results'])) {
+                foreach($getResponseJson['results'] as $key => $result) {
+                    $data[$key]['image'] = !is_null($result['primaryImage']) ? $result['primaryImage']['url'] : '';
+                    $data[$key]['title'] = $result['titleText']['text'];
+                    $data[$key]['description'] = !is_null($result['primaryImage']) ? $result['primaryImage']['caption'] : '';
+                    $movieRatings = new MoviesDatabase('/titles' . '/' . $result['id'] . '/ratings');
+                    $data[$key]['rating'] = !empty($movieRatings['results']) ? $movieRatings['results']['averageRating'] : 0.0;
+                    $data[$key]['vote_count'] = !empty($movieRatings['results']) ? $movieRatings['results']['numVotes'] : 0;
+                    $data[$key]['released_at'] = $result['releaseDate']['day'] . '-' . $result['releaseDate']['month'] . $result['releaseDate']['year']; // d-m-Y
+                }
+            }
         }
     }
 
@@ -68,12 +79,11 @@ class StoreRapidApiMoviesCommand extends Command
     {
         if($msg != '')
             $this->info($msg);
-        if(!is_multidimensional($previewTable)) {
-            $this->table(
-                array_keys($previewTable),
-                [$previewTable]
-            );
-        }
+
+        $this->table(
+            array_keys($previewTable),
+            [$previewTable]
+        );
     }
 
 
