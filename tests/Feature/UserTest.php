@@ -8,12 +8,37 @@ use Tests\TestCase;
 
 class UserTest extends TestCase
 {
+    public function testCanUserLogin(): void
+    {
+        $this->withoutExceptionHandling();
+
+        $data = [
+            'email' => 'test@example.com',
+            'password' => 'password'
+        ];
+
+        $response = $this->postJson('/api/login', $data);
+
+        $response->assertStatus(200);
+    }
+
     /**
      * A basic feature test example.
      */
-    public function test_example(): void
+    public function testCanUserRegister(): void
     {
-        $response = $this->get('/');
+        $this->withoutExceptionHandling();
+
+        $user = $this->createUserRaw();
+
+        $data = [
+            'email' => $user['email'],
+            'name' => $user['name'],
+            'password' => 'password',
+            'password_confirmation' => 'password',
+        ];
+
+        $response = $this->postJson('/api/register', $data);
 
         $response->assertStatus(200);
     }
