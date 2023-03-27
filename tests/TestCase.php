@@ -9,13 +9,13 @@ abstract class TestCase extends BaseTestCase
 {
     use CreatesApplication;
 
-    public function createUser(): User
+    public function createUser(array $attributes = []): User
     {
-        return User::factory()->make();
+        return User::factory()->create($attributes);
     }
 
-    public function createUserRaw(): array
+    public function createUserRaw(array $attributes = []): array
     {
-        return User::factory()->raw();
+        return User::factory()->raw($attributes);
     }
 }

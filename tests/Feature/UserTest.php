@@ -4,22 +4,30 @@ namespace Tests\Feature;
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
+use JustSteveKing\StatusCode\Http;
 use Tests\TestCase;
 
 class UserTest extends TestCase
 {
+    use RefreshDatabase;
+
     public function testCanUserLogin(): void
     {
         $this->withoutExceptionHandling();
 
+        $user = $this->createUser();
+
         $data = [
-            'email' => 'test@example.com',
+            'email' => $user->email,
             'password' => 'password'
         ];
 
-        $response = $this->postJson('/api/login', $data);
+        $response = $this->actingAs($user)->postJson('/api/login', $data);
 
-        $response->assertStatus(200);
+        $status = Http::OK;
+
+        $response->assertStatus($status->value);
+        $this->assertAuthenticatedAs($user);
     }
 
     /**
@@ -40,6 +48,8 @@ class UserTest extends TestCase
 
         $response = $this->postJson('/api/register', $data);
 
-        $response->assertStatus(200);
+        $status = Http::OK;
+
+        $response->assertStatus($status->value);
     }
 }
