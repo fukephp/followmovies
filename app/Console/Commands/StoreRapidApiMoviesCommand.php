@@ -28,8 +28,8 @@ class StoreRapidApiMoviesCommand extends Command
     public function handle(): void
     {
         $host = env('RAPIDAPI_MOVIESDB_HOST');
-
         $url = 'https://' . $host . '/titles';
+
         $lists = [
             'most_pop_movies',
             'top_boxoffice_200',
@@ -70,20 +70,28 @@ class StoreRapidApiMoviesCommand extends Command
     protected function insertRecords($responseRecords)
     {
         if(!empty($responseRecords['results'])) {
-            $data = [];
-            foreach($responseRecords['results'] as $key => $result) {
-                $data[$key]['image_url'] = !is_null($result['primaryImage']) ? $result['primaryImage']['url'] : '';
-                $data[$key]['title'] = $result['titleText']['text'];
-                $data[$key]['caption'] = !is_null($result['primaryImage']) ? $result['primaryImage']['caption']['plainText'] : '';
-
+            foreach($responseRecords['results'] as $key => $result)
+            {
                 $movieRatings = new MoviesDatabase('/titles' . '/' . $result['id'] . '/ratings');
                 $movieRatings = $movieRatings->getJson();
-                $data[$key]['rating'] = !empty($movieRatings['results']) ? $movieRatings['results']['averageRating'] : 0.0;
-                $data[$key]['vote_count'] = !empty($movieRatings['results']) ? $movieRatings['results']['numVotes'] : 0;
-                $data[$key]['released_at'] = $result['releaseDate']['year'] . '-' . $result['releaseDate']['month'] . '-' . $result['releaseDate']['day'];
-            }
+                $resultData = [];
 
-            Movie::insert($data);
+                $resultData['image_url'] = !is_null($result['primaryImage']) ? $result['primaryImage']['url'] : '';
+                $resultData['title'] = $result['titleText']['text'];
+                $resultData['caption'] = !is_null($result['primaryImage']) ? $result['primaryImage']['caption']['plainText'] : '';
+                $resultData['rating'] = !empty($movieRatings['results']) ? $movieRatings['results']['averageRating'] : 0.0;
+                $resultData['vote_count'] = !empty($movieRatings['results']) ? $movieRatings['results']['numVotes'] : 0;
+                $resultData['released_at'] = $result['releaseDate']['year'] . '-' . $result['releaseDate']['month'] . '-' . $result['releaseDate']['day'];
+
+                try {
+                    $movie = Movie::create($resultData);
+                    $this->info("Movie {$movie->title} is stored.");
+                } catch (\Illuminate\Database\QueryException $exception) {
+                    dump($exception->getMessage());
+                    $this->error('Movie store is failed move to next record. Error message:'. $exception->getMessage());
+                    exit;
+                }
+            }
         }
     }
 
