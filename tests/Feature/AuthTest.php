@@ -6,8 +6,9 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use JustSteveKing\StatusCode\Http;
 use Tests\TestCase;
+use Tymon\JWTAuth\Facades\JWTAuth;
 
-class UserTest extends TestCase
+class AuthTest extends TestCase
 {
     use RefreshDatabase;
 
@@ -24,9 +25,7 @@ class UserTest extends TestCase
 
         $response = $this->actingAs($user)->postJson('/api/login', $data);
 
-        $status = Http::OK;
-
-        $response->assertStatus($status->value);
+        $response->assertStatus(Http::OK());
         $this->assertAuthenticatedAs($user);
     }
 
@@ -48,8 +47,15 @@ class UserTest extends TestCase
 
         $response = $this->postJson('/api/register', $data);
 
-        $status = Http::OK;
+        $response->assertStatus(Http::OK());
+    }
 
-        $response->assertStatus($status->value);
+    public function testCanUserLogout(): void
+    {
+        $user = $this->createUser();
+
+        $response = $this->actingAs($user)->postJson('/api/logout');
+
+        $response->assertStatus(Http::OK());
     }
 }
