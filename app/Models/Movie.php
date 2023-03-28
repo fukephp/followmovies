@@ -42,4 +42,14 @@ class Movie extends Model
     {
         return $this->title . '-movie';
     }
+
+    /**
+     * Get the route key for the model.
+     *
+     * @return string
+     */
+    public function getRouteKeyName(): string
+    {
+        return 'slug';
+    }
 }

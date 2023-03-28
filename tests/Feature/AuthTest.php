@@ -4,10 +4,8 @@ namespace Tests\Feature;
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
-use Illuminate\Testing\Fluent\AssertableJson;
 use JustSteveKing\StatusCode\Http;
 use Tests\TestCase;
-use Tymon\JWTAuth\Facades\JWTAuth;
 
 class AuthTest extends TestCase
 {
@@ -55,6 +53,8 @@ class AuthTest extends TestCase
 
     public function testCanUserLogout(): void
     {
+        $this->withoutExceptionHandling();
+
         $user = $this->createUser();
 
         $token = $this->createToken($user);
@@ -66,6 +66,8 @@ class AuthTest extends TestCase
 
     public function testCanUserGetDetalis(): void
     {
+        $this->withoutExceptionHandling();
+
         $user = $this->createUser();
 
         $token = $this->createToken($user);
@@ -74,12 +76,5 @@ class AuthTest extends TestCase
 
         $this->hasAllAssertJson($response, ['success', 'message', 'data', 'data.user']);
         $response->assertStatus(Http::OK());
-    }
-
-    protected function hasAllAssertJson($response, array $attributes = [])
-    {
-        return $response->assertJson(fn (AssertableJson $json) =>
-            $json->hasAll($attributes)
-        );
     }
 }
