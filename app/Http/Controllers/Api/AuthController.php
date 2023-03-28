@@ -38,7 +38,7 @@ class AuthController extends Controller
         return $this->respondWithToken($token, Http::OK());
     }
 
-    public function logout(Request $request)
+    public function logout()
     {
         auth()->logout(true);
 
@@ -48,7 +48,7 @@ class AuthController extends Controller
         ], Http::NO_CONTENT());
     }
 
-    public function refresh(Request $request)
+    public function refresh()
     {
         return $this->respondWithToken(auth()->refresh());
     }
@@ -74,7 +74,7 @@ class AuthController extends Controller
     protected function respondWithToken($token, $status)
     {
         return response()->json([
-            'access_token' => $token,
+            'token' => $token,
             'token_type' => 'bearer',
             'expires_in' => auth()->factory()->getTTL() * 60
         ], $status);

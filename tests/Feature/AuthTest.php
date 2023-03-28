@@ -4,6 +4,7 @@ namespace Tests\Feature;
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
+use Illuminate\Testing\Fluent\AssertableJson;
 use JustSteveKing\StatusCode\Http;
 use Tests\TestCase;
 use Tymon\JWTAuth\Facades\JWTAuth;
@@ -25,6 +26,7 @@ class AuthTest extends TestCase
 
         $response = $this->actingAs($user)->postJson('/api/login', $data);
 
+        $this->hasAllAssertJson($response, ['token', 'expires_in', 'token_type']);
         $response->assertStatus(Http::OK());
         $this->assertAuthenticatedAs($user);
     }
@@ -47,6 +49,7 @@ class AuthTest extends TestCase
 
         $response = $this->postJson('/api/register', $data);
 
+        $this->hasAllAssertJson($response, ['token', 'expires_in', 'token_type']);
         $response->assertStatus(Http::OK());
     }
 
@@ -54,8 +57,29 @@ class AuthTest extends TestCase
     {
         $user = $this->createUser();
 
+        $token = $this->createToken($user);
+
         $response = $this->actingAs($user)->postJson('/api/logout');
 
+        $response->assertStatus(Http::NO_CONTENT());
+    }
+
+    public function testCanUserGetDetalis(): void
+    {
+        $user = $this->createUser();
+
+        $token = $this->createToken($user);
+
+        $response = $this->actingAs($user)->getJson('/api/authenticated-user-details');
+
+        $this->hasAllAssertJson($response, ['success', 'message', 'data', 'data.user']);
         $response->assertStatus(Http::OK());
+    }
+
+    protected function hasAllAssertJson($response, array $attributes = [])
+    {
+        return $response->assertJson(fn (AssertableJson $json) =>
+            $json->hasAll($attributes)
+        );
     }
 }
