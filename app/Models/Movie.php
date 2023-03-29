@@ -24,6 +24,8 @@ class Movie extends Model
         'released_at',
     ];
 
+    protected $dates = ['released_at', 'updated_at', 'created_at'];
+
     /**
      * Return the sluggable configuration array for this model.
      *
@@ -33,14 +35,9 @@ class Movie extends Model
     {
         return [
             'slug' => [
-                'source' => 'movieslug'
+                'source' => 'title'
             ]
         ];
-    }
-
-    public function getMovieSlugAttribute(): string
-    {
-        return $this->title . '-movie';
     }
 
     /**

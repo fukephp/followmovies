@@ -20,14 +20,14 @@ class MovieTest extends TestCase
 
         // Create five movies
         $this->createMovies(5);
+
         $response = $this->actingAs($user)->getJson('/api/movies');
 
         $response->assertJson(fn (AssertableJson $json) =>
         $json->has('success')
              ->has('message')
-             ->has('data.movies', 5)
-        );
-        $response->assertStatus(Http::OK());
+             ->has('data', 5)
+        )->assertStatus(Http::OK());
 
     }
 
@@ -51,7 +51,7 @@ class MovieTest extends TestCase
 
         $data = $this->createMovieRaw([
             'title' => 'Movie example',
-            'slug' => 'movie-example-movie'
+            'slug' => 'movie-example'
         ]);
 
         $response = $this->actingAs($user)->postJson('/api/movies', $data);
@@ -68,7 +68,7 @@ class MovieTest extends TestCase
 
         $data = $this->createMovieRaw([
             'title' => 'Movie example update',
-            'slug' => 'movie-example-update-movie'
+            'slug' => 'movie-example-update'
         ]);
 
         $response = $this->actingAs($user)->putJson('/api/movies/'.$movie->slug, $data);

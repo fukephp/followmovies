@@ -5,7 +5,9 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreMovieRequest;
 use App\Http\Requests\UpdateMovieRequest;
+use App\Http\Resources\MovieResource;
 use App\Models\Movie;
+use App\ResponseJsonCollection\MainResponseJson;
 use Illuminate\Http\Request;
 use JustSteveKing\StatusCode\Http;
 
@@ -17,31 +19,12 @@ class MovieController extends Controller
 
         $movies = Movie::all();
 
-        return response()->json([
-            'success' => true,
-            'message' => 'List of all movies',
-            'data' => [
-                'movies' => $movies
-            ]
-        ], Http::OK());
+        return new MainResponseJson(MovieResource::collection($movies), true, 'List of all movies', Http::OK);
     }
 
     public function show(Movie $movie)
     {
-        if(!$movie) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Movie not found'
-            ], Http::NOT_FOUND());
-        }
-
-        return response()->json([
-            'success' => true,
-            'message' => 'Single movie',
-            'data' => [
-                'movie' => $movie
-            ]
-        ], Http::OK());
+        return new MainResponseJson(new MovieResource($movie), true, 'Single movie.', Http::OK);
     }
 
     public function store(StoreMovieRequest $request)
@@ -51,13 +34,7 @@ class MovieController extends Controller
         $movie = Movie::create($credentials);
 
         if($movie)
-            return response()->json([
-                'success' => true,
-                'message' => 'Movie is created',
-                'data' => [
-                    'movie' => $movie
-                ]
-            ], Http::CREATED());
+            return new MainResponseJson(new MovieResource($movie), true, 'Movie is created.', Http::CREATED);
     }
 
     public function update(Movie $movie, UpdateMovieRequest $request)
@@ -65,22 +42,13 @@ class MovieController extends Controller
         $credentials = $request->only('title', 'caption', 'image_url', 'rating', 'vote_count', 'released_at');
 
         if($movie->update($credentials))
-            return response()->json([
-                'success' => true,
-                'message' => 'Movie is updated.',
-                'data' => [
-                    'movie' => $movie
-                ]
-            ], Http::ACCEPTED());
+            return new MainResponseJson(new MovieResource($movie), true, 'Movie is updated.', Http::ACCEPTED);
 
     }
 
     public function destroy(Movie $movie)
     {
         if($movie->delete())
-            return response([
-                'success' => true,
-                'message' => 'Movie is removed.'
-            ], Http::NO_CONTENT());
+            return new MainResponseJson([], true, 'Movie is deleted.', Http::NO_CONTENT);
     }
 }
