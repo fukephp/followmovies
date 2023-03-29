@@ -4,6 +4,7 @@ namespace Tests;
 
 use App\Models\Movie;
 use App\Models\User;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
 use Illuminate\Testing\Fluent\AssertableJson;
 
@@ -23,9 +24,14 @@ abstract class TestCase extends BaseTestCase
         return User::factory()->raw($attributes);
     }
 
-    public function createMovie(array $attributes = []): Movie
+    public function createMovie(array $attributes = [], $count = null): Movie
     {
-        return Movie::factory()->create($attributes);
+        return Movie::factory($count)->create($attributes);
+    }
+
+    public function createMovies($count): Collection
+    {
+        return Movie::factory($count)->create();
     }
 
     public function createMovieRaw(array $attributes = []): array

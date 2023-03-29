@@ -2,7 +2,9 @@
 
 namespace Database\Factories;
 
+use App\Models\Movie;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use \Cviebrock\EloquentSluggable\Services\SlugService;
 
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Movie>
@@ -16,9 +18,12 @@ class MovieFactory extends Factory
      */
     public function definition(): array
     {
+        $title = $this->faker->jobTitle();
+        $slug = SlugService::createSlug(Movie::class, 'slug', $title);
+
         return [
-            'title' => 'First title',
-            'slug' => 'First-title-movie',
+            'title' => $title,
+            'slug' => $slug,
             'caption' => $this->faker->sentence(),
             'image_url' => $this->faker->imageUrl(),
             'rating' => $this->faker->randomFloat(1, 1.0, 10.0),
