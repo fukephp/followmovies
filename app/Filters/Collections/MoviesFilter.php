@@ -9,7 +9,7 @@ use App\Filters\ApiFilter;
 class MoviesFilter extends ApiFilter
 {
     protected $safeParms = [
-        'title' => ['eq', 'gt', 'lt', 'lte'],
+        'title' => ['eq', 'gt', 'lt', 'lte', 'like'],
         'rating' => ['eq', 'gt', 'lt', 'lte'],
         'vote_count' => ['eq', 'gt', 'lt', 'lte'],
         'released_at' => ['eq', 'gt', 'lt', 'lte'],
@@ -24,6 +24,7 @@ class MoviesFilter extends ApiFilter
         'lte' => '<=',
         'gt' => '>',
         'gte' => '>=',
+        'like' => 'like'
     ];
 
 }

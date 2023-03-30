@@ -12,6 +12,8 @@ abstract class TestCase extends BaseTestCase
 {
     use CreatesApplication;
 
+    public const AUTH_API_PREFIX = '/api/auth';
+
     public function createUser(array $attributes = []): User
     {
         $user = User::factory()->create($attributes);

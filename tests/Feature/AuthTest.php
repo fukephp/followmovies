@@ -22,7 +22,7 @@ class AuthTest extends TestCase
             'password' => 'password'
         ];
 
-        $response = $this->actingAs($user)->postJson('/api/login', $data);
+        $response = $this->actingAs($user)->postJson(self::AUTH_API_PREFIX . '/login', $data);
 
         $this->hasAllAssertJson($response, ['token', 'expires_in', 'token_type']);
         $response->assertStatus(Http::OK());
@@ -45,7 +45,7 @@ class AuthTest extends TestCase
             'password_confirmation' => 'password',
         ];
 
-        $response = $this->postJson('/api/register', $data);
+        $response = $this->postJson(self::AUTH_API_PREFIX . '/register', $data);
 
         $this->hasAllAssertJson($response, ['token', 'expires_in', 'token_type']);
         $response->assertStatus(Http::OK());
@@ -59,7 +59,7 @@ class AuthTest extends TestCase
 
         $token = $this->createToken($user);
 
-        $response = $this->actingAs($user)->postJson('/api/logout');
+        $response = $this->actingAs($user)->postJson(self::AUTH_API_PREFIX . '/logout');
 
         $response->assertStatus(Http::NO_CONTENT());
     }
@@ -72,7 +72,7 @@ class AuthTest extends TestCase
 
         $token = $this->createToken($user);
 
-        $response = $this->actingAs($user)->getJson('/api/authenticated-user-details');
+        $response = $this->actingAs($user)->getJson(self::AUTH_API_PREFIX . '/user-detalis');
 
         $this->hasAllAssertJson($response, ['success', 'message', 'data', 'data.user']);
         $response->assertStatus(Http::OK());
