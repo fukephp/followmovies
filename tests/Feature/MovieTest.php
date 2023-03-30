@@ -18,17 +18,15 @@ class MovieTest extends TestCase
 
         $user = $this->createUser();
 
-        // Create five movies
         $this->createMovies(5);
 
         $response = $this->actingAs($user)->getJson('/api/movies');
 
         $response->assertJson(fn (AssertableJson $json) =>
-        $json->has('success')
-             ->has('message')
-             ->has('data', 5)
-        )->assertStatus(Http::OK());
-
+            $json->has('data', 5)
+                ->has('links')
+                ->has('meta'))
+            ->assertStatus(Http::OK());
     }
 
     public function testCanUserSeeSingleMovie()
