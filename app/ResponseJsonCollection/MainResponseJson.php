@@ -2,7 +2,6 @@
 
 namespace App\ResponseJsonCollection;
 
-use App\Http\Resources\MovieResource;
 use Illuminate\Contracts\Support\Responsable;
 use Illuminate\Http\Resources\Json\ResourceCollection;
 use JustSteveKing\StatusCode\Http;
@@ -15,7 +14,13 @@ class MainResponseJson implements Responsable {
     private $data;
     private Http $status;
 
-    public function __construct(HttpJsonResource|ResourceCollection|array $data, bool $success = true, mixed $message = null, Http $status = Http::OK)
+    /**
+     * @param HttpJsonResource|ResourceCollection|array $data
+     * @param $message
+     * @param bool $success
+     * @param Http $status
+     */
+    public function __construct(HttpJsonResource|ResourceCollection|array $data, mixed $message = null, bool $success = true, Http $status = Http::OK)
     {
         $collectData = [
             'success'   => $success,
