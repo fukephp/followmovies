@@ -25,7 +25,7 @@ class StoreMovieRequest extends FormRequest
             'title' => 'required|unique:movies',
             'caption' => 'required',
             'image_url' => 'url',
-            'rating' => 'required|between:1.0,10.0',
+            'rating' => 'required|numeric|between:1.0,10.0',
             'vote_count' => 'numeric',
             'released_at' => 'required|date_format:Y-m-d'
         ];

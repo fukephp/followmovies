@@ -20,7 +20,7 @@ class MovieResource extends JsonResource
             'title'         => $this->title,
             'caption'       => $this->caption,
             'image_url'     => $this->image_url,
-            'rating'        => $this->rating,
+            'rating'        => (float) $this->rating,
             'vote_count'    => $this->vote_count,
             'released_at'   => $this->released_at,
             'created_at'    => $this->created_at->format('Y-m-d H:i:s'),
