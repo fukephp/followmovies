@@ -63,7 +63,7 @@ class StoreRapidApiMoviesCommand extends Command
 
             $this->insertRecords($responseRecords);
 
-            $this->info("All movies(limit: {$limit}) are stored to DB!");
+            $this->info("All movies(limit: {$limit}) are stored in DB!");
         }
     }
 
