@@ -26,6 +26,11 @@ class Movie extends Model
 
     protected $dates = ['released_at', 'updated_at', 'created_at'];
 
+    public function users()
+    {
+        return $this->belongsToMany(User::class);
+    }
+
     /**
      * Return the sluggable configuration array for this model.
      *
