@@ -32,7 +32,7 @@ Route::prefix('/auth')->group(function () {
 Route::middleware(['auth:api'])->group(function() {
     Route::prefix('/user')->group(function() {
         Route::controller(UserController::class)->group(function() {
-            Route::get('/following-movies', 'followingMovies');
+            Route::get('/favorite-movies', 'favoriteMovies');
         });
     });
     Route::controller(MovieController::class)->group(function() {
