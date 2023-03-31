@@ -11,27 +11,5 @@ class UserTest extends TestCase
 {
     use RefreshDatabase;
 
-    public function testCanUserFollowMovie()
-    {
-        $this->withoutExceptionHandling();
 
-        $user = $this->createUser();
-        $movie = $this->createMovie();
-
-        $response = $this->actingAs($user)->postJson(self::USER_API_PREFIX . '/movies' . '/' . $movie->slug . '/follow');
-
-        $response->assertStatus(Http::OK());
-    }
-
-    public function testCanUserUnfollowMovie()
-    {
-        $this->withoutExceptionHandling();
-
-        $user = $this->createUser();
-        $movie = $this->createMovie();
-
-        $response = $this->actingAs($user)->postJson(self::USER_API_PREFIX . '/movies' . '/' . $movie->slug . '/unfollow');
-
-        $response->assertStatus(Http::NO_CONTENT());
-    }
 }

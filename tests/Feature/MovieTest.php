@@ -85,4 +85,16 @@ class MovieTest extends TestCase
 
         $response->assertStatus(Http::NO_CONTENT());
     }
+
+    public function testCanUserFollowMovie()
+    {
+        $this->withoutExceptionHandling();
+
+        $user = $this->createUser();
+        $movie = $this->createMovie();
+
+        $response = $this->actingAs($user)->postJson(self::MOVIE_API_PREFIX . '/' . $movie->slug . '/follow');
+
+        $response->assertStatus(Http::OK());
+    }
 }

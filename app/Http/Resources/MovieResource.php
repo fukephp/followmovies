@@ -15,16 +15,18 @@ class MovieResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
-            'id'            => $this->id,
-            'slug'          => $this->slug,
-            'title'         => $this->title,
-            'caption'       => $this->caption,
-            'image_url'     => $this->image_url,
-            'rating'        => (float) $this->rating,
-            'vote_count'    => $this->vote_count,
-            'released_at'   => $this->released_at,
-            'created_at'    => $this->created_at->format('Y-m-d H:i:s'),
-            'updated_at'    => $this->updated_at->format('Y-m-d H:i:s'),
+            'id'                    => $this->id,
+            'slug'                  => $this->slug,
+            'title'                 => $this->title,
+            'caption'               => $this->caption,
+            'image_url'             => $this->image_url,
+            'rating'                => number_format($this->rating, 1),
+            'vote_count'            => $this->vote_count,
+            'released_at'           => $this->released_at,
+            'created_at'            => $this->created_at->format('Y-m-d H:i:s'),
+            'updated_at'            => $this->updated_at->format('Y-m-d H:i:s'),
+            'users'                 => UserResource::collection($this->whenLoaded('users')),
+            'follow_users_count'    => $this->whenCounted('users')
         ];
     }
 }

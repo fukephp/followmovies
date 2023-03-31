@@ -32,10 +32,14 @@ Route::prefix('/auth')->group(function () {
 Route::middleware(['auth:api'])->group(function() {
     Route::prefix('/user')->group(function() {
         Route::controller(UserController::class)->group(function() {
-            Route::get('/movies', 'movies');
-            Route::post('/movies/{movie}/follow', 'followMovie');
-            Route::post('/movies/{movie}/unfollow', 'unfollowMovie');
+            Route::get('/following-movies', 'followingMovies');
         });
     });
-    Route::apiResource('movies', MovieController::class);
+    Route::controller(MovieController::class)->group(function() {
+        Route::apiResource('movies', MovieController::class);
+        Route::prefix('/movies')->group(function() {
+            Route::post('/{movie}/follow', 'follow');
+        });
+    });
+
 });
