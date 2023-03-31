@@ -13,6 +13,8 @@ abstract class TestCase extends BaseTestCase
     use CreatesApplication;
 
     public const AUTH_API_PREFIX = '/api/auth';
+    public const MOVIE_API_PREFIX = '/api/movies';
+    public const USER_API_PREFIX = '/api/user';
 
     public function createUser(array $attributes = []): User
     {

@@ -1,1 +1,2 @@
 *.log
+laravel_access.log.*

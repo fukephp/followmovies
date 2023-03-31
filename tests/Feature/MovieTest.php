@@ -20,7 +20,7 @@ class MovieTest extends TestCase
 
         $this->createMovies(5);
 
-        $response = $this->actingAs($user)->getJson('/api/movies');
+        $response = $this->actingAs($user)->getJson(parent::MOVIE_API_PREFIX);
 
         $response->assertJson(fn (AssertableJson $json) =>
             $json->has('data', 5)
@@ -36,7 +36,7 @@ class MovieTest extends TestCase
         $user = $this->createUser();
         $movie = $this->createMovie();
 
-        $response = $this->actingAs($user)->getJson('/api/movies/'.$movie->slug);
+        $response = $this->actingAs($user)->getJson(parent::MOVIE_API_PREFIX . '/' . $movie->slug);
 
         $response->assertStatus(Http::OK());
     }
@@ -52,7 +52,7 @@ class MovieTest extends TestCase
             'slug' => 'movie-example'
         ]);
 
-        $response = $this->actingAs($user)->postJson('/api/movies', $data);
+        $response = $this->actingAs($user)->postJson(parent::MOVIE_API_PREFIX, $data);
 
         $response->assertStatus(Http::CREATED());
     }
@@ -69,7 +69,7 @@ class MovieTest extends TestCase
             'slug' => 'movie-example-update'
         ]);
 
-        $response = $this->actingAs($user)->putJson('/api/movies/'.$movie->slug, $data);
+        $response = $this->actingAs($user)->putJson(parent::MOVIE_API_PREFIX . '/' . $movie->slug, $data);
 
         $response->assertStatus(Http::ACCEPTED());
     }
@@ -81,7 +81,7 @@ class MovieTest extends TestCase
         $user = $this->createUser();
         $movie = $this->createMovie();
 
-        $response = $this->actingAs($user)->deleteJson('/api/movies/'.$movie->slug);
+        $response = $this->actingAs($user)->deleteJson(parent::MOVIE_API_PREFIX . '/' . $movie->slug);
 
         $response->assertStatus(Http::NO_CONTENT());
     }

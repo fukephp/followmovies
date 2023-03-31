@@ -18,7 +18,7 @@ class UserTest extends TestCase
         $user = $this->createUser();
         $movie = $this->createMovie();
 
-        $response = $this->actingAs($user)->postJson("/api/user/movies/{$movie->slug}/follow");
+        $response = $this->actingAs($user)->postJson(self::USER_API_PREFIX . '/movies' . '/' . $movie->slug . '/follow');
 
         $response->assertStatus(Http::OK());
     }
@@ -30,7 +30,7 @@ class UserTest extends TestCase
         $user = $this->createUser();
         $movie = $this->createMovie();
 
-        $response = $this->actingAs($user)->postJson("/api/user/movies/{$movie->slug}/unfollow");
+        $response = $this->actingAs($user)->postJson(self::USER_API_PREFIX . '/movies' . '/' . $movie->slug . '/unfollow');
 
         $response->assertStatus(Http::NO_CONTENT());
     }
