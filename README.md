@@ -10,9 +10,6 @@
 * [Aditional libraries used in project](#aditional-libraries-used-in-project)
 * [Project challenges](#project-challenges)
 
-  
-  
-
 ## Introduction
 
 Basic laravel project REST API using [JWT](https://jwt.io/introduction) as authentication to secure api routes.
@@ -20,7 +17,7 @@ Main topic for this app is following and filtering movies. Real movies can be fe
 - Top most popular movies, according to imdb ranking
 - Top 200 all time box office movies, according to boxofficemojo
 - Top 250 english movies by rating, according to imdb ranking and etc.
-More about command itself will be explained in Instalation/Configuration
+More about command itself will be explained in Instalation/Configuration.
 
 ## Project requirements
 

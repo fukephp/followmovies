@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Components\UserComponent;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\LoginRequest;
 use App\Http\Requests\RegisterRequest;
@@ -12,11 +13,15 @@ use JustSteveKing\StatusCode\Http;
 
 class AuthController extends Controller
 {
+    /**
+     * @param \App\Http\Requests\LoginRequest $request
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function login(LoginRequest $request)
     {
-        $credentials = $request->only('email', 'password');
+        $token = app(UserComponent::class)->login($request);
 
-        if(!$token = auth()->attempt($credentials)) {
+        if(!$token) {
             return response()->json([
                 'success' => false,
                 'message' => 'Incorrect email/password'
@@ -26,19 +31,20 @@ class AuthController extends Controller
         return $this->respondWithToken($token, Http::OK());
     }
 
+    /**
+     * @param \App\Http\Requests\RegisterRequest $request
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function register(RegisterRequest $request)
     {
-        $user = User::create([
-            'email' => $request->email,
-            'name' => $request->name,
-            'password' => bcrypt($request->password),
-        ]);
-
-        $token = auth()->login($user);
+        $token = app(UserComponent::class)->register($request);
 
         return $this->respondWithToken($token, Http::OK());
     }
 
+    /**
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function logout()
     {
         auth()->logout(true);
@@ -46,14 +52,20 @@ class AuthController extends Controller
         return response()->json([
             'success' => true,
             'message' => 'User is succesfully logout.',
-        ], Http::NO_CONTENT());
+        ], Http::OK());
     }
 
+    /**
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function refresh()
     {
         return $this->respondWithToken(auth()->refresh());
     }
 
+    /**
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function userDetalis()
     {
         $user = auth()->user();
@@ -69,9 +81,8 @@ class AuthController extends Controller
 
     /**
      * Get the token array structure.
-     *
-     * @param  string $token
-     *
+     * @param string $token
+     * @param mixed $status
      * @return \Illuminate\Http\JsonResponse
      */
     protected function respondWithToken($token, $status)

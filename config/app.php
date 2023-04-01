@@ -196,6 +196,10 @@ return [
         App\Providers\RouteServiceProvider::class,
         Tymon\JWTAuth\Providers\LaravelServiceProvider::class,
 
+        /*
+        * Components Service Provides
+        */
+        App\Providers\UserComponentServiceProvider::class,
     ],
 
     /*

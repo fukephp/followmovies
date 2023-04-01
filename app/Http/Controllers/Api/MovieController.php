@@ -8,11 +8,8 @@ use App\Http\Requests\StoreMovieRequest;
 use App\Http\Requests\UpdateMovieRequest;
 use App\Http\Resources\MovieCollection;
 use App\Http\Resources\MovieResource;
-use App\Http\Resources\UserResource;
 use App\Models\Movie;
-use App\Models\User;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Cache;
 use JustSteveKing\StatusCode\Http;
 
 class MovieController extends Controller

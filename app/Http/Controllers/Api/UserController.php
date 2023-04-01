@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Components\UserComponent;
 use App\Http\Controllers\Controller;
-use App\Http\Resources\MovieCollection;
 use App\Http\Resources\UserResource;
 use App\Models\Movie;
 use Illuminate\Http\Request;
@@ -44,14 +44,7 @@ class UserController extends Controller
             ->load('movies')
             ->loadCount('movies');
 
-        if($user->movies()->where('movies.id', $movie->id)->exists())
-        {
-            $message = 'Unfollow';
-            $user->movies()->detach($movie->id);
-        } else {
-            $message = 'Follow';
-            $user->movies()->attach($movie->id);
-        }
+        $message = app(UserComponent::class)->movieAttachOrDetach($user, $movie);
 
         return (new UserResource($user))
                 ->additional(['success' => true, 'message' => $message])

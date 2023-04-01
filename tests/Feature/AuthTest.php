@@ -62,7 +62,7 @@ class AuthTest extends TestCase
 
         $response = $this->actingAs($user)->postJson(self::AUTH_API_PREFIX . '/logout');
 
-        $response->assertStatus(Http::NO_CONTENT());
+        $response->assertStatus(Http::OK());
     }
 
     public function testCanUserGetDetalis(): void
