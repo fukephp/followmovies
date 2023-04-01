@@ -2,6 +2,7 @@
 
 namespace App\Components;
 
-class BaseComponent {
+class BaseComponent
+{
 
 }

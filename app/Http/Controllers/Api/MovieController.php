@@ -10,6 +10,7 @@ use App\Http\Requests\UpdateMovieRequest;
 use App\Http\Resources\MovieCollection;
 use App\Http\Resources\MovieResource;
 use App\Models\Movie;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use JustSteveKing\StatusCode\Http;
 
@@ -19,7 +20,7 @@ class MovieController extends Controller
      * @param \Illuminate\Http\Request $request
      * @return \App\Http\Resources\MovieCollection
      */
-    public function index(Request $request)
+    public function index(Request $request): MovieCollection
     {
         $filter = new MoviesFilter();
         $queryItems = $filter->transform($request); //[['column', 'operator', 'value']]
@@ -41,7 +42,7 @@ class MovieController extends Controller
      * @param \App\Models\Movie $movie
      * @return \Illuminate\Http\JsonResponse
      */
-    public function show(Movie $movie)
+    public function show(Movie $movie): JsonResponse
     {
         $movie->load('users')->loadCount('users');
 
@@ -55,7 +56,7 @@ class MovieController extends Controller
      * @param \App\Http\Requests\StoreMovieRequest $request
      * @return \Illuminate\Http\JsonResponse|void
      */
-    public function store(StoreMovieRequest $request)
+    public function store(StoreMovieRequest $request): JsonResponse
     {
         $movie = app(MovieComponent::class)->create($request);
 
@@ -69,9 +70,9 @@ class MovieController extends Controller
     /**
      * @param \App\Models\Movie $movie
      * @param \App\Http\Requests\UpdateMovieRequest $request
-     * @return \Illuminate\Http\JsonResponse|void
+     * @return \Illuminate\Http\JsonResponse
      */
-    public function update(Movie $movie, UpdateMovieRequest $request)
+    public function update(Movie $movie, UpdateMovieRequest $request): JsonResponse
     {
         $update = app(MovieComponent::class)->update($movie, $request);
 
@@ -85,9 +86,9 @@ class MovieController extends Controller
 
     /**
      * @param \App\Models\Movie $movie
-     * @return \Illuminate\Http\JsonResponse|void
+     * @return \Illuminate\Http\JsonResponse
      */
-    public function destroy(Movie $movie)
+    public function destroy(Movie $movie): JsonResponse
     {
         if($movie->delete())
             return response()->json([

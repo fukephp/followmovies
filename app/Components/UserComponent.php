@@ -42,7 +42,12 @@ class UserComponent extends BaseComponent
         return auth()->login($user);
     }
 
-    public function movieAttachOrDetach(User $user, Movie $movie)
+    /**
+     * @param \App\Models\User $user
+     * @param \App\Models\Movie $movie
+     * @return string
+     */
+    public function movieAttachOrDetach(User $user, Movie $movie): string
     {
         $message = '';
 

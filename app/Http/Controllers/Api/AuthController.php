@@ -8,6 +8,7 @@ use App\Http\Requests\LoginRequest;
 use App\Http\Requests\RegisterRequest;
 use App\Http\Resources\UserResource;
 use App\Models\User;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use JustSteveKing\StatusCode\Http;
 
@@ -17,7 +18,7 @@ class AuthController extends Controller
      * @param \App\Http\Requests\LoginRequest $request
      * @return \Illuminate\Http\JsonResponse
      */
-    public function login(LoginRequest $request)
+    public function login(LoginRequest $request): JsonResponse
     {
         $token = app(UserComponent::class)->login($request);
 
@@ -45,7 +46,7 @@ class AuthController extends Controller
     /**
      * @return \Illuminate\Http\JsonResponse
      */
-    public function logout()
+    public function logout(): JsonResponse
     {
         auth()->logout(true);
 
@@ -58,7 +59,7 @@ class AuthController extends Controller
     /**
      * @return \Illuminate\Http\JsonResponse
      */
-    public function refresh()
+    public function refresh(): JsonResponse
     {
         return $this->respondWithToken(auth()->refresh());
     }
@@ -66,7 +67,7 @@ class AuthController extends Controller
     /**
      * @return \Illuminate\Http\JsonResponse
      */
-    public function userDetalis()
+    public function userDetalis(): JsonResponse
     {
         $user = auth()->user();
 
@@ -85,7 +86,7 @@ class AuthController extends Controller
      * @param mixed $status
      * @return \Illuminate\Http\JsonResponse
      */
-    protected function respondWithToken($token, $status)
+    protected function respondWithToken($token, $status): JsonResponse
     {
         return response()->json([
             'token' => $token,
