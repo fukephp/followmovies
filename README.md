@@ -17,7 +17,7 @@ Main topic for this app is following and filtering movies. Real movies can be fe
 - Top most popular movies, according to imdb ranking
 - Top 200 all time box office movies, according to boxofficemojo
 - Top 250 english movies by rating, according to imdb ranking and etc.
-More about command itself will be explained in Instalation/Configuration.
+More about command itself will be explained in Installation/Configuration.
 
 ## Project requirements
 
@@ -28,6 +28,39 @@ More about command itself will be explained in Instalation/Configuration.
 -  **tymon/jwt-auth**: v2.0
 
 ## Installation/Configuration
+
+When project is cloned first docker containers needs to be setup.
+
+### Docker setup
+
+**Remainder:** docker container example is used prebuild docker containers [laradock](https://laradock.io/getting-started/#Install-Laravel).
+In terminal go to cloned project and enter docker folder `cd docker`.
+
+In `docker-compose.yml` docker container version is **3.5** and services will be used:
+- **workspace**
+- **php-fpm**
+- **php-worker**
+- **nginx**
+- **mysql**
+- **phpmyadmin**
+
+### Docker enviroment setup
+In folder `docker` use command copy file `cp .env.example .env`
+In created `.env` file change: 
+- `PHP_VERSION=8.1`
+- `COMPOSE_PROJECT_NAME=followmovies` (or whatever name)
+- `DATA_PATH_HOST=~/.followmovies/data` (needs to be same path name as project name)
+
+### Nginx setup
+
+In `docker/nginx/sites` use command copy file `cp laravel.conf.example followmovies.conf`
+In `followmovies.conf` server_name change `server_name followmovies.test;` and register virtual host domain use command `sudo nano /etc/hosts` and below of file add server_name `127.0.0.1       followmovies.test`
+Now can procced compose docker container.
+
+### Compose docker container
+
+To install fresh workspace and build container in `docker` folder use command `docker-compose up -d nginx mysql phpmyadmin`
+When container is build in `docker` folder use command `docker-compose exec workspace bash`
 
 ## Project features
 
