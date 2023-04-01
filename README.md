@@ -1,23 +1,48 @@
 # Laravel project: REST API (JWT) - Follow movies
 
 ## Roadmap 
-* :star: [Introduction](#star-introduction)
-* :dart: [Project requirements](#dart-laravel-project-requirements)
-* :gear: [Installation/Configuration](#gear-installationconfiguration)
-* :rocket: [Project features](#rocket-project-features)
-* :speech_balloon: [Run the application tests](#speech_balloon-run-the-application-tests)
-* :bookmark: [Logging channels](#bookmark-logging-channels)
-* :electric_plug: [Aditional libraries used in project](#electric_plug-aditional-librariespackages-used-in-project)
+* [Introduction](#introduction)
+* [Project requirements](#project-requirements)
+* [Installation/Configuration](#installationconfiguration)
+* [Project features](#project-features)
+* [Run the application tests](#run-the-application-tests)
+* [Logging channels](#logging-channels)
+* [Aditional libraries used in project](#aditional-libraries-used-in-project)
+* [Project challenges](#project-challenges)
 
 
-## :star: Introduction
+## Introduction
 
-## :dart: Project requirements
+## Project requirements
+- **docker**: v20.10.23
+- **php**: v8.1
+- **laravel/framework**: v10.4.1
+- **db**: mysql
+- **tymon/jwt-auth**: v2.0
 
-## :gear:  Installation/Configuration
+## Installation/Configuration
 
-## :rocket: Project features
+## Project features
 
-## :speech_balloon: Run the application tests
+## Run the application tests
 
-## :electric_plug: Aditional libraries/packages used in project
+## Aditional packages used in project
+- [cviebrock/eloquent-sluggable](https://github.com/cviebrock/eloquent-sluggable): v10.*
+- [juststeveking/http-status-code](https://github.com/JustSteveKing/http-status-code): v3.*
+- [barryvdh/laravel-ide-helper](https://github.com/barryvdh/laravel-ide-helper): v2.13
+
+## Project challenges
+- Authentication Middleware should be JWT 
+- Controllers should be written in a clean, approachable coding style.
+- The API should have postable content with the main topic being movies 
+- Favorites caching implementation
+- Query Filters implementation
+- Users should be able to follow a selected movie
+- API Pagination
+- Slugs
+- Database
+- Database Migrations
+- Database Seeds
+- Routes
+- Test coverage should be around 40%
+
