@@ -38,7 +38,24 @@ class MovieTest extends TestCase
 
         $response = $this->actingAs($user)->getJson(parent::MOVIE_API_PREFIX . '/' . $movie->slug);
 
-        $response->assertStatus(Http::OK());
+        $response->assertStatus(Http::OK())
+            ->assertJsonStructure([
+                'data' => [
+                    'id',
+                    'slug',
+                    'title',
+                    'caption',
+                    'image_url',
+                    'rating',
+                    'vote_count',
+                    'released_at',
+                    'created_at',
+                    'updated_at',
+                    'users',
+                    'follow_users_count'
+                ],
+                'success'
+            ]);
     }
 
     public function testCanUserStoreMovie()
@@ -86,15 +103,44 @@ class MovieTest extends TestCase
         $response->assertStatus(Http::NO_CONTENT());
     }
 
-    public function testCanUserFollowMovie()
+    public function testCanUserSeeValidationErrorsStoreMovie()
     {
-        $this->withoutExceptionHandling();
+        $user = $this->createUser();
 
+        $data = $this->createMovieRaw([
+            'title' => ''
+        ]);
+
+        $response = $this->actingAs($user)->postJson(parent::MOVIE_API_PREFIX, $data);
+
+        $response->assertStatus(Http::UNPROCESSABLE_ENTITY())
+            ->assertJson(function (AssertableJson $json) use ($data) {
+                $json->has('message')
+                    ->has('errors', 1) // it will check the exact size of the errors bag
+                    ->whereAllType([
+                        'errors.title' => 'array',
+                    ]);
+            });
+    }
+
+    public function testCanUserSeeValidationErrorsUpdateMovie()
+    {
         $user = $this->createUser();
         $movie = $this->createMovie();
 
-        $response = $this->actingAs($user)->postJson(self::MOVIE_API_PREFIX . '/' . $movie->slug . '/follow');
+        $data = $this->createMovieRaw([
+            'title' => ''
+        ]);
 
-        $response->assertStatus(Http::OK());
+        $response = $this->actingAs($user)->putJson(parent::MOVIE_API_PREFIX . '/' . $movie->slug, $data);
+
+        $response->assertStatus(Http::UNPROCESSABLE_ENTITY())
+            ->assertJson(function (AssertableJson $json) use ($data) {
+                $json->has('message')
+                    ->has('errors', 1) // it will check the exact size of the errors bag
+                    ->whereAllType([
+                        'errors.title' => 'array',
+                    ]);
+            });
     }
 }

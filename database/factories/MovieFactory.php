@@ -26,7 +26,7 @@ class MovieFactory extends Factory
             'slug' => $slug,
             'caption' => $this->faker->sentence(),
             'image_url' => $this->faker->imageUrl(),
-            'rating' => $this->faker->randomFloat(1, 1.0, 10.0),
+            'rating' => number_format($this->faker->randomFloat(1, 1.0, 10.0), 1),
             'vote_count' => $this->faker->randomNumber(),
             'released_at' => $this->faker->date('Y-m-d')
         ];

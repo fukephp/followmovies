@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\LoginRequest;
 use App\Http\Requests\RegisterRequest;
+use App\Http\Resources\UserResource;
 use App\Models\User;
 use Illuminate\Http\Request;
 use JustSteveKing\StatusCode\Http;
@@ -55,13 +56,15 @@ class AuthController extends Controller
 
     public function userDetalis()
     {
-        return response()->json([
-            'success' => true,
-            'message' => 'Authenticated User Details.',
-            'data' => [
-                'user' => auth()->user(),
-            ],
-        ], Http::OK());
+        $user = auth()->user();
+
+        return (new UserResource($user))
+            ->additional([
+                'message' => 'Authenticated User Details.',
+                'success' => true,
+            ])
+            ->response()
+            ->setStatusCode(Http::OK());
     }
 
     /**

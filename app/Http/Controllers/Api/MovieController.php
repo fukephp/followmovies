@@ -12,10 +12,15 @@ use App\Http\Resources\UserResource;
 use App\Models\Movie;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 use JustSteveKing\StatusCode\Http;
 
 class MovieController extends Controller
 {
+    /**
+     * @param \Illuminate\Http\Request $request
+     * @return \App\Http\Resources\MovieCollection
+     */
     public function index(Request $request)
     {
         $filter = new MoviesFilter();
@@ -34,6 +39,10 @@ class MovieController extends Controller
         }
     }
 
+    /**
+     * @param \App\Models\Movie $movie
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function show(Movie $movie)
     {
         $movie->load('users')->loadCount('users');
@@ -44,6 +53,10 @@ class MovieController extends Controller
             ->setStatusCode(Http::OK());
     }
 
+    /**
+     * @param \App\Http\Requests\StoreMovieRequest $request
+     * @return \Illuminate\Http\JsonResponse|void
+     */
     public function store(StoreMovieRequest $request)
     {
         $credentials = $request->only('title', 'caption', 'image_url', 'rating', 'vote_count', 'released_at');
@@ -57,6 +70,11 @@ class MovieController extends Controller
                 ->setStatusCode(Http::CREATED());
     }
 
+    /**
+     * @param \App\Models\Movie $movie
+     * @param \App\Http\Requests\UpdateMovieRequest $request
+     * @return \Illuminate\Http\JsonResponse|void
+     */
     public function update(Movie $movie, UpdateMovieRequest $request)
     {
         $credentials = $request->only('title', 'caption', 'image_url', 'rating', 'vote_count', 'released_at');
@@ -69,6 +87,10 @@ class MovieController extends Controller
 
     }
 
+    /**
+     * @param \App\Models\Movie $movie
+     * @return \Illuminate\Http\JsonResponse|void
+     */
     public function destroy(Movie $movie)
     {
         if($movie->delete())
@@ -76,34 +98,5 @@ class MovieController extends Controller
                 'success' => true,
                 'message' => 'Movie is deleted'
             ], Http::NO_CONTENT());
-    }
-
-    public function follow(Movie $movie, Request $request)
-    {
-        $user = User::find(auth()->user()->id);
-
-        if($user->movies()->where('movies.id', $movie->id)->exists())
-        {
-            $message = 'Unfollow';
-            $user->movies()->detach($movie->id);
-        } else {
-            $message = 'Follow';
-            $user->movies()->attach($movie->id);
-        }
-
-        return (new UserResource($user))
-                ->additional(['success' => true, 'message' => $message])
-                ->response()
-                ->setStatusCode(Http::OK());
-    }
-
-    /**
-     * @param User $user
-     * @param Movie $movie
-     * @return int
-     */
-    protected function unfollow(User $user, Movie $movie): int
-    {
-        return $user->movies()->detach($movie->id);
     }
 }

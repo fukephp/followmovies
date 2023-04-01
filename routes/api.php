@@ -33,13 +33,10 @@ Route::middleware(['auth:api'])->group(function() {
     Route::prefix('/user')->group(function() {
         Route::controller(UserController::class)->group(function() {
             Route::get('/favorite-movies', 'favoriteMovies');
+            Route::post('/{movie}/follow', 'follow');
         });
     });
     Route::controller(MovieController::class)->group(function() {
         Route::apiResource('movies', MovieController::class);
-        Route::prefix('/movies')->group(function() {
-            Route::post('/{movie}/follow', 'follow');
-        });
     });
-
 });
