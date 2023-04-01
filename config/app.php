@@ -200,6 +200,7 @@ return [
         * Components Service Provides
         */
         App\Providers\UserComponentServiceProvider::class,
+        App\Providers\MovieComponentServiceProvider::class,
     ],
 
     /*

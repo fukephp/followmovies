@@ -100,7 +100,7 @@ class MovieTest extends TestCase
 
         $response = $this->actingAs($user)->deleteJson(parent::MOVIE_API_PREFIX . '/' . $movie->slug);
 
-        $response->assertStatus(Http::NO_CONTENT());
+        $response->assertStatus(Http::OK());
     }
 
     public function testCanUserSeeValidationErrorsStoreMovie()

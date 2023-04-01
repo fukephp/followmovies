@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Components\MovieComponent;
 use App\Filters\Collections\MoviesFilter;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreMovieRequest;
@@ -56,9 +57,7 @@ class MovieController extends Controller
      */
     public function store(StoreMovieRequest $request)
     {
-        $credentials = $request->only('title', 'caption', 'image_url', 'rating', 'vote_count', 'released_at');
-
-        $movie = Movie::create($credentials);
+        $movie = app(MovieComponent::class)->create($request);
 
         if($movie)
             return (new MovieResource($movie))
@@ -74,9 +73,9 @@ class MovieController extends Controller
      */
     public function update(Movie $movie, UpdateMovieRequest $request)
     {
-        $credentials = $request->only('title', 'caption', 'image_url', 'rating', 'vote_count', 'released_at');
+        $update = app(MovieComponent::class)->update($movie, $request);
 
-        if($movie->update($credentials))
+        if($update)
             return (new MovieResource($movie))
                 ->additional(['success' => true, 'message' => 'Movie is updated.'])
                 ->response()
@@ -94,6 +93,6 @@ class MovieController extends Controller
             return response()->json([
                 'success' => true,
                 'message' => 'Movie is deleted'
-            ], Http::NO_CONTENT());
+            ], Http::OK());
     }
 }
