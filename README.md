@@ -36,7 +36,9 @@ When project is cloned first docker containers needs to be setup.
 
 ### Docker setup
 
-**Remainder:** docker container example is used pre-configured docker services [laradock](https://laradock.io/getting-started/#Install-Laravel).
+**Remainder:**
+- Install docker desktop [https://www.docker.com/products/docker-desktop/](https://www.docker.com/products/docker-desktop/)
+- Docker container example is used pre-configured docker services [laradock](https://laradock.io/getting-started/#Install-Laravel).
 **Laradock**  is a full PHP development environment for Docker.
 It supports a variety of common services, all pre-configured to provide a ready PHP development environment.
 
@@ -54,7 +56,7 @@ In `docker-compose.yml` docker container version is **3.5** and services will be
 ### Docker enviroment setup
 
 In folder `docker` use command copy file `cp .env.example .env`
-In created `.env` file change:
+Created `.env` file change:
 -  `COMPOSE_PROJECT_NAME=followmovies` (or whatever name)
 -  `DATA_PATH_HOST=~/.followmovies/data` (needs to be same path name as project name)
 
@@ -64,21 +66,52 @@ In `docker/nginx/sites` use command copy file `cp laravel.conf.example followmov
 
 In `followmovies.conf` server_name change `server_name followmovies.test;` and register virtual host domain use command `sudo nano /etc/hosts` and below of file add server_name `127.0.0.1 followmovies.test`
 
-Now can procced compose docker container.
+Now we can procced compose docker container.
 
 ### Compose docker container
 
 To install fresh workspace and build container in `docker` folder use command `docker-compose up -d nginx mysql phpmyadmin`
 
-When container is build in `docker` folder use command `docker-compose exec workspace bash`
+### Bash command
+
+When container is build in `docker` folder type command `docker-compose exec workspace bash`
+
+### Laravel Application Database setup, migration, and seeds
+
+When workspace bash is executed in `/var/www` type command `composer install` so vendor is avaliable for this laravel project all packages will be installed. 
+Then in root project type command copy `cp .env.example .env`. Geneate app key type command `php artisan key:generate` and now check database variables.
+`DB_CONNECTION` and `DB_HOST` must be **mysql**, `DB_USERNAME` and `DB_PASSWORD` by default is **root**. To check what is default DB configuration in `docker/.env` file.
+To create new DB we can use PhpMyAdmin database managment system. container `phpmyadmin` is already running and url is this [http://localhost:8081/index.php](http://localhost:8081/index.php). To access phpmyadmin system type server, user, and password fields. Credentials are same as in .env file.
+When DB is added now migrations and seeds will work.
+First migrate all migrations type command `php artisan migrate` 
+Seed command is `php artisan db:seed` are in `DatabaseSeeder.php` uncomment the code what is needed: - create multiple users or single user.
+
+### Create new JWT secret token
+
+Set the JWTAuth secret key used to sign the tokens type command `php artisan jwt:secret`
+
+### ApiRapid Setup and Command
+
+In [ApiRapid](https://rapidapi.com/SAdrian/api/moviesdatabase) register as user to use free access to api for all virarty of data we now use moviesdatabase In `.env` file add api key in `RAPIDAPI_KEY=` AND `RAPIDAPI_HOST=moviesdatabase.p.rapidapi.com`
+
+Now we can use this command `php artisan api:store-rapid-api-movies-command`.
+This command is acting as seed so it will store real movies in movies table. Command have few steps to procced but max movies can be added in one command execute is 10. But if we execute command again and **select page 2** then we will get 10 more movies and etc.
 
 ## Project features
+- Filter API
+- Follow
+- Store movies from rapid api
 
 ## Run the application tests
+
+## Laravel Request DOCS
+Auto Generate API Documentation for request rules and parameters.
+Dashboard view in the browser on `/request-docs/`
 
 ## Aditional packages used in project
 
 - [laradock](https://laradock.io/getting-started/#Install-Laravel)
+- [rakutentech/laravel-request-docs](https://github.com/rakutentech/laravel-request-docs)
 - [cviebrock/eloquent-sluggable](https://github.com/cviebrock/eloquent-sluggable): v10.*
 - [juststeveking/http-status-code](https://github.com/JustSteveKing/http-status-code): v3.*
 - [barryvdh/laravel-ide-helper](https://github.com/barryvdh/laravel-ide-helper): v2.13
