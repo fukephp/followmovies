@@ -1,4 +1,3 @@
-
 # Laravel project: REST API (JWT) - Follow movies
 
 ## Roadmap
@@ -6,21 +5,32 @@
 * [Introduction](#introduction)
 * [Project requirements](#project-requirements)
 * [Installation/Configuration](#installationconfiguration)
+	* [Docker setup](#docker-setup)
+	* [Docker enviroment setup](#docker-enviroment-setup)
+	* [Nginx setup](#nginx-setup)
+	* [Compose docker container](#compose-docker-container)
+	* [Bash command](#bash-command)
+	* [Laravel Application setup, database setup, migration, and seeds](#laravel-application-setup-database-setup-migration-and-seeds)
+    * [Create new JWT secret token](#create-new-jwt-secret-token)
+    * [ApiRapid Setup and Command](#apirapid-setup-and-command)
 * [Project features](#project-features)
+* [Dynamic Movie Filter API](#dynamic-movie-filter-api)
 * [Run the application tests](#run-the-application-tests)
-* [Logging channels](#logging-channels)
-* [Aditional libraries used in project](#aditional-libraries-used-in-project)
+* [Laravel Request DOCS](#laravel-request-docs)
+* [Packages used in application](#packages-used-in-application)
 * [Project challenges](#project-challenges)
 
 ## Introduction
 
 Basic laravel project REST API using [JWT](https://jwt.io/introduction) as authentication to secure api routes.
-Main topic for this app is following and filtering movies. Real movies can be fetch from [RapidAPI](https://rapidapi.com/SAdrian/api/moviesdatabase) using inbuild command and it has option to choose mutiple real movies that are sorted by for example:
+
+Main topic for this app is user can follow and filter movies. Real movies can be fetch from [RapidAPI](https://rapidapi.com/SAdrian/api/moviesdatabase) using inbuild command and it has option to choose mutiple real movies that are sorted by for example:
+
 - Top most popular movies, according to imdb ranking
 - Top 200 all time box office movies, according to boxofficemojo
 - Top 250 english movies by rating, according to imdb ranking and etc.
 
-More about command itself will be explained in Installation/Configuration.
+More about command itself will be explained in [ApiRapid Setup and Command](#apirapid-setup-and-command).
 
 ## Project requirements
 
@@ -39,7 +49,8 @@ When project is cloned first docker containers needs to be setup.
 **Remainder:**
 - Install docker desktop [https://www.docker.com/products/docker-desktop/](https://www.docker.com/products/docker-desktop/)
 - Docker container example is used pre-configured docker services [laradock](https://laradock.io/getting-started/#Install-Laravel).
-**Laradock**  is a full PHP development environment for Docker.
+
+**Laradock** is a full PHP development environment for Docker.
 It supports a variety of common services, all pre-configured to provide a ready PHP development environment.
 
 In terminal go to cloned project and enter docker folder `cd docker`.
@@ -62,7 +73,8 @@ Created `.env` file change:
 
 ### Nginx setup
 
-In `docker/nginx/sites` use command copy file `cp laravel.conf.example followmovies.conf`
+In `docker/nginx/sites` use command copy file 
+`cp laravel.conf.example followmovies.conf`
 
 In `followmovies.conf` server_name change `server_name followmovies.test;` and register virtual host domain use command `sudo nano /etc/hosts` and below of file add server_name `127.0.0.1 followmovies.test`
 
@@ -76,39 +88,82 @@ To install fresh workspace and build container in `docker` folder use command `d
 
 When container is build in `docker` folder type command `docker-compose exec workspace bash`
 
-### Laravel Application Database setup, migration, and seeds
+### Laravel Application setup, database setup, migration, and seeds
 
-When workspace bash is executed in `/var/www` type command `composer install` so vendor is avaliable for this laravel project all packages will be installed. 
-Then in root project type command copy `cp .env.example .env`. Geneate app key type command `php artisan key:generate` and now check database variables.
+When workspace bash is executed in `/var/www` type command `composer install` so vendor is avaliable for this laravel project all packages will be installed.
+
+Then in root project type command copy:
+
+    cp .env.example .env
+
+Geneate app key type command:
+
+    php artisan key:generate
+
+and now check database variables.
+
 `DB_CONNECTION` and `DB_HOST` must be **mysql**, `DB_USERNAME` and `DB_PASSWORD` by default is **root**. To check what is default DB configuration in `docker/.env` file.
+
 To create new DB we can use PhpMyAdmin database managment system. container `phpmyadmin` is already running and url is this [http://localhost:8081/index.php](http://localhost:8081/index.php). To access phpmyadmin system type server, user, and password fields. Credentials are same as in .env file.
+
 When DB is added now migrations and seeds will work.
-First migrate all migrations type command `php artisan migrate` 
-Seed command is `php artisan db:seed` are in `DatabaseSeeder.php` uncomment the code what is needed: - create multiple users or single user.
+
+First migrate all migrations type command 
+
+    php artisan migrate
+
+Type command:
+
+    php artisan db:seed
+
+In `DatabaseSeeder.php` uncomment the code what is needed: - create multiple users or single user.
 
 ### Create new JWT secret token
 
-Set the JWTAuth secret key used to sign the tokens type command `php artisan jwt:secret`
+Set the JWTAuth secret key used to sign the tokens type command:
+
+    php artisan jwt:secret
 
 ### ApiRapid Setup and Command
 
-In [ApiRapid](https://rapidapi.com/SAdrian/api/moviesdatabase) register as user to use free access to api for all virarty of data we now use moviesdatabase In `.env` file add api key in `RAPIDAPI_KEY=` AND `RAPIDAPI_HOST=moviesdatabase.p.rapidapi.com`
+In [ApiRapid](https://rapidapi.com/SAdrian/api/moviesdatabase) register as user to use free access to api for all virarty of data we now use moviesdatabase In `.env` file add api key in `RAPIDAPI_KEY={key}`
+`RAPIDAPI_HOST=moviesdatabase.p.rapidapi.com`
 
-Now we can use this command `php artisan api:store-rapid-api-movies-command`.
+Now we can use this command: 
+
+    php artisan api:store-rapid-api-movies-command
+
 This command is acting as seed so it will store real movies in movies table. Command have few steps to procced but max movies can be added in one command execute is 10. But if we execute command again and **select page 2** then we will get 10 more movies and etc.
 
 ## Project features
-- Filter API
+
+- Dynamic Movie Filter API
 - Follow
-- Store movies from rapid api
+- Store real movies from rapid api
+
+## Dynamic Movie Filter API
+
+In api route `/api/movies` will display all movies that are stored in DB
+
+When we want to use filter parameters we need to pass query safe parameters(title, caption, rating and etc.). Also there is predefined operators so if we want to display movies that rating is GRATER_THAN (>) 8.0 value api route will be `/api/movies?rating[gt]=8.0` then we will have list of movies that rating is grater than 8.0 also if we want additional query parameter we use `AND separator &`
 
 ## Run the application tests
 
+Test are cover all feature tests:
+- CRUD Movies
+- User authentication
+- User followed movies list and follow request
+
+Use command: 
+
+    php artisan test
+
 ## Laravel Request DOCS
+
 Auto Generate API Documentation for request rules and parameters.
 Dashboard view in the browser on `/request-docs/`
 
-## Aditional packages used in project
+## Packages used in application
 
 - [laradock](https://laradock.io/getting-started/#Install-Laravel)
 - [rakutentech/laravel-request-docs](https://github.com/rakutentech/laravel-request-docs)

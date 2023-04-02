@@ -61,7 +61,7 @@ class AuthController extends Controller
      */
     public function refreshToken(): JsonResponse
     {
-        return $this->respondWithToken(auth()->refresh());
+        return $this->respondWithToken(auth()->refresh(true, true), Http::OK());
     }
 
     /**
@@ -83,7 +83,7 @@ class AuthController extends Controller
     /**
      * Get the token array structure.
      * @param string $token
-     * @param mixed $status
+     * @param  \JustSteveKing\StatusCode\Http $status
      * @return \Illuminate\Http\JsonResponse
      */
     protected function respondWithToken($token, $status): JsonResponse
