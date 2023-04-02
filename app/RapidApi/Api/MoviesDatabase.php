@@ -6,7 +6,12 @@ use App\RapidApi\RapidApiClient;
 
 class MoviesDatabase extends RapidApiClient
 {
-    public function __construct($prefix = '/titles', array $optionalParameters = [])
+    /**
+     * @param string $prefix
+     * @param array $optionalParameters
+     * @return void
+     */
+    public function __construct(string $prefix = '/titles', array $optionalParameters = [])
     {
         $host = env('RAPIDAPI_MOVIESDB_HOST');
 

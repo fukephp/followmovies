@@ -10,31 +10,55 @@ use Psr\Http\Message\RequestInterface;
 
 class RapidApiClient
 {
-    private $clientResponse;
+    /**
+     * @var \Illuminate\Http\Client\Response $clientResponse;
+     */
+    private \Illuminate\Http\Client\Response $clientResponse;
 
-    public function __construct(mixed $host, mixed $url, array $params)
+    /**
+     * @param string $host
+     * @param string $url
+     * @param array $params
+     * @return void
+     */
+    public function __construct(string $host, string $url, array $params)
     {
         $response = $this->httpClient($host, $url, $params);
 
         $this->clientResponse = $response;
     }
 
+    /**
+     * @return \Illuminate\Http\Client\Response
+     */
     public function getResponse(): Response
     {
         return $this->clientResponse;
     }
 
+    /**
+     * @return array
+     */
     public function getJson(): array
     {
         return $this->clientResponse->json();
     }
 
+    /**
+     * @return \Illuminate\Support\Collection
+     */
     public function getCollection(): Collection
     {
         return $this->clientResponse->collect();
     }
 
-    protected function httpClient($host, $url, $params): Response
+    /**
+     * @param string $host
+     * @param string $url
+     * @param array $params
+     * @return \Illuminate\Http\Client\Response
+     */
+    protected function httpClient(string $host, string $url, array $params): Response
     {
         $response = Http::withMiddleware(
             Middleware::mapRequest(function (RequestInterface $request) use ($host) {

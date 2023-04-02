@@ -4,6 +4,7 @@ namespace App\Console\Commands;
 
 use App\Models\Movie;
 use App\RapidApi\Api\MoviesDatabase;
+use Carbon\Carbon;
 use Illuminate\Console\Command;
 
 class StoreRapidApiMoviesCommand extends Command
@@ -81,15 +82,19 @@ class StoreRapidApiMoviesCommand extends Command
                 $resultData['caption'] = !is_null($result['primaryImage']) ? $result['primaryImage']['caption']['plainText'] : '';
                 $resultData['rating'] = !empty($movieRatings['results']) ? $movieRatings['results']['averageRating'] : 0.0;
                 $resultData['vote_count'] = !empty($movieRatings['results']) ? $movieRatings['results']['numVotes'] : 0;
-                $resultData['released_at'] = $result['releaseDate']['year'] . '-' . $result['releaseDate']['month'] . '-' . $result['releaseDate']['day'];
+
+                $releasedDate = isset($result['releaseDate']['day']) ? $result['releaseDate']['year'] . '-' . $result['releaseDate']['month'] . '-' . $result['releaseDate']['day'] : $result['releaseDate']['year'] . '-' . $result['releaseDate']['month'] . '-1';
+                $releasedDateFromat = Carbon::parse($releasedDate)->format('Y-m-d');
+                $resultData['released_at'] = $releasedDateFromat;
 
                 try {
-                    $movie = Movie::create($resultData);
+                    // $movie = Movie::create($resultData);
+                    $movie = Movie::firstOrCreate(
+                        $resultData, ['title' => $resultData['title']]
+                    );
                     $this->info("Movie {$movie->title} is stored.");
                 } catch (\Illuminate\Database\QueryException $exception) {
-                    dump($exception->getMessage());
                     $this->error('Movie store is failed move to next record. Error message:'. $exception->getMessage());
-                    exit;
                 }
             }
         }
