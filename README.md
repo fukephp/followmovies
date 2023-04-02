@@ -55,7 +55,6 @@ In `docker-compose.yml` docker container version is **3.5** and services will be
 
 In folder `docker` use command copy file `cp .env.example .env`
 In created `.env` file change:
--  `PHP_VERSION=8.1`
 -  `COMPOSE_PROJECT_NAME=followmovies` (or whatever name)
 -  `DATA_PATH_HOST=~/.followmovies/data` (needs to be same path name as project name)
 
