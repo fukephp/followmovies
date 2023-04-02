@@ -2,6 +2,7 @@
 
 namespace App\Filters\Collections;
 
+use App\Enums\Operator;
 use Illuminate\Http\Request;
 use App\Filters\ApiFilter;
 
@@ -9,22 +10,38 @@ use App\Filters\ApiFilter;
 class MoviesFilter extends ApiFilter
 {
     protected $safeParms = [
-        'title' => ['eq', 'gt', 'lt', 'lte', 'like'],
-        'rating' => ['eq', 'gt', 'lt', 'lte'],
-        'vote_count' => ['eq', 'gt', 'lt', 'lte'],
-        'released_at' => ['eq', 'gt', 'lt', 'lte'],
-        'created_at'  => ['eq', 'gt', 'lt', 'lte']
+        'title' => [
+            Operator::EQUAL,
+            Operator::GRATER_THAN,
+            Operator::LESS_THEN,
+            Operator::LESS_THEN_EQUAL,
+            Operator::LIKE,
+        ],
+        'rating' => [
+            Operator::EQUAL,
+            Operator::GRATER_THAN,
+            Operator::LESS_THEN,
+            Operator::LESS_THEN_EQUAL,
+        ],
+        'vote_count' => [
+            Operator::EQUAL,
+            Operator::GRATER_THAN,
+            Operator::LESS_THEN,
+            Operator::LESS_THEN_EQUAL,
+        ],
+        'released_at' => [
+            Operator::EQUAL,
+            Operator::GRATER_THAN,
+            Operator::LESS_THEN,
+            Operator::LESS_THEN_EQUAL,
+        ],
+        'created_at'  => [
+            Operator::EQUAL,
+            Operator::GRATER_THAN,
+            Operator::LESS_THEN,
+            Operator::LESS_THEN_EQUAL,
+        ]
     ];
 
     protected $columnMap = [];
-
-    protected $operatorMap = [
-        'eq' => '=',
-        'lt' => '<',
-        'lte' => '<=',
-        'gt' => '>',
-        'gte' => '>=',
-        'like' => 'like'
-    ];
-
 }
