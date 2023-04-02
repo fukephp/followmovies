@@ -11,6 +11,28 @@ enum Operator: string
     case GRATER_THAN_EQUAL = 'gte';
     case LIKE = 'like';
 
+    public static function getAll(array $except = null): array
+    {
+        $except = [self::LIKE];
+        $operators = [
+            self::EQUAL,
+            self::LESS_THEN,
+            self::LESS_THEN_EQUAL,
+            self::GRATER_THAN,
+            self::GRATER_THAN_EQUAL,
+            self::LIKE
+        ];
+
+        if(!is_null($except)) {
+            foreach($except as $exc) {
+                if (($key = array_search($exc, $operators)) !== false)
+                    unset($operators[$key]);
+            }
+        }
+
+        return $operators;
+    }
+
     public function toSymbol(): string
     {
         return match($this) {

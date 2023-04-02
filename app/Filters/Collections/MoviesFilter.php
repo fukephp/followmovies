@@ -9,39 +9,19 @@ use App\Filters\ApiFilter;
 
 class MoviesFilter extends ApiFilter
 {
-    protected $safeParms = [
-        'title' => [
-            Operator::EQUAL,
-            Operator::GRATER_THAN,
-            Operator::LESS_THEN,
-            Operator::LESS_THEN_EQUAL,
-            Operator::LIKE,
-        ],
-        'rating' => [
-            Operator::EQUAL,
-            Operator::GRATER_THAN,
-            Operator::LESS_THEN,
-            Operator::LESS_THEN_EQUAL,
-        ],
-        'vote_count' => [
-            Operator::EQUAL,
-            Operator::GRATER_THAN,
-            Operator::LESS_THEN,
-            Operator::LESS_THEN_EQUAL,
-        ],
-        'released_at' => [
-            Operator::EQUAL,
-            Operator::GRATER_THAN,
-            Operator::LESS_THEN,
-            Operator::LESS_THEN_EQUAL,
-        ],
-        'created_at'  => [
-            Operator::EQUAL,
-            Operator::GRATER_THAN,
-            Operator::LESS_THEN,
-            Operator::LESS_THEN_EQUAL,
-        ]
-    ];
+    protected $safeParms = [];
 
     protected $columnMap = [];
+
+    public function __construct()
+    {
+        $this->safeParms = [
+            'title' => Operator::getAll(),
+            'caption' => Operator::getAll(),
+            'rating' => Operator::getAll([Operator::LIKE]),
+            'vote_count' => Operator::getAll([Operator::LIKE]),
+            'released_at' => Operator::getAll([Operator::LIKE]),
+            'created_at' => Operator::getAll([Operator::LIKE]),
+        ];
+    }
 }
