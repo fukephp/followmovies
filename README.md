@@ -7,9 +7,9 @@
 * [Installation/Configuration](#installationconfiguration)
 	* [Docker setup](#docker-setup)
 	* [Docker enviroment setup](#docker-enviroment-setup)
+    * [Compose docker container](#compose-docker-container)
+    * [Bash command](#bash-command)
 	* [Nginx setup](#nginx-setup)
-	* [Compose docker container](#compose-docker-container)
-	* [Bash command](#bash-command)
 	* [Laravel Application setup, database setup, migration, and seeds](#laravel-application-setup-database-setup-migration-and-seeds)
     * [Create new JWT secret token](#create-new-jwt-secret-token)
     * [ApiRapid Setup and Command](#apirapid-setup-and-command)
@@ -71,26 +71,31 @@ Created `.env` file change:
 -  `COMPOSE_PROJECT_NAME=followmovies` (or whatever name)
 -  `DATA_PATH_HOST=~/.followmovies/data` (needs to be same path name as project name)
 
-### Nginx setup
-
-In `docker/nginx/sites` use command copy file 
-`cp laravel.conf.example followmovies.conf`
-
-In `followmovies.conf` server_name change `server_name followmovies.test;` and register virtual host domain use command `sudo nano /etc/hosts` and below of file add server_name `127.0.0.1 followmovies.test`
-
-Now we can procced compose docker container.
-
 ### Compose docker container
 
-To install fresh workspace and build container in `docker` folder use command `docker-compose up -d nginx mysql phpmyadmin`
+To install fresh workspace and build container in `docker` folder use command `docker-compose up -d nginx mysql phpmyadmin`. When build is finished try to enter bash command
 
 ### Bash command
 
 When container is build in `docker` folder type command `docker-compose exec workspace bash`
 
+### Nginx setup
+
+In `docker/nginx/sites` use command copy file 
+`cp laravel.conf.example followmovies.conf`
+
+In `followmovies.conf` changes are: 
+- Change server name `server_name followmovies.test;`
+- Remove directory laravel and root will be like this `root /var/www/public;` 
+and register virtual host domain use command `sudo nano /etc/hosts` and below of file add server_name `127.0.0.1 followmovies.test`
+After changes are done restart docker container nginx. First check nginx container name it will be mostly named container-name-nginx-1.
+
+    docker-compose container-name-nginx-1 restart
+
+
 ### Laravel Application setup, database setup, migration, and seeds
 
-When workspace bash is executed in `/var/www` type command `composer install` so vendor is avaliable for this laravel project all packages will be installed.
+When workspace bash(`docker-compose exec workspace bash`) is executed in `/var/www` type command `composer install` so vendor is avaliable for this laravel project all packages will be installed.
 
 Then in root project type command copy:
 
