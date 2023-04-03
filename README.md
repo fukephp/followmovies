@@ -13,7 +13,6 @@
 	* [Laravel Application setup, database setup, migration, and seeds](#laravel-application-setup-database-setup-migration-and-seeds)
     * [Create new JWT secret token](#create-new-jwt-secret-token)
     * [ApiRapid Setup and Command](#apirapid-setup-and-command)
-* [Project features](#project-features)
 * [Dynamic Movie Filter API](#dynamic-movie-filter-api)
 * [Run the application tests](#run-the-application-tests)
 * [Laravel Request DOCS](#laravel-request-docs)
@@ -140,12 +139,6 @@ Now we can use this command:
     php artisan api:store-rapid-api-movies-command
 
 This command is acting as seed so it will store real movies in movies table. Command have few steps to procced but max movies can be added in one command execute is 10. But if we execute command again and **select page 2** then we will get 10 more movies and etc.
-
-## Project features
-
-- Dynamic Movie Filter API
-- Follow
-- Store real movies from rapid api
 
 ## Dynamic Movie Filter API
 
