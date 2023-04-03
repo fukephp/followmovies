@@ -88,10 +88,11 @@ In `followmovies.conf` changes are:
 - Change server name `server_name followmovies.test;`
 - Remove directory laravel and root will be like this `root /var/www/public;` 
 and register virtual host domain use command `sudo nano /etc/hosts` and below of file add server_name `127.0.0.1 followmovies.test`
-After changes are done restart docker container nginx. First check nginx container name it will be mostly named container-name-nginx-1.
+After changes are done restart docker container nginx. First check nginx container name it will be mostly named container-name-nginx-1. To check what containers are aviliable type command first exit bash or create new terminal tab and go to project/docker and type command `docker ps`
 
-    docker-compose container-name-nginx-1 restart
-
+```php
+docker-compose container-name-nginx-1 restart
+```
 
 ### Laravel Application setup, database setup, migration, and seeds
 
