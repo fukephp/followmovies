@@ -52,7 +52,10 @@ When project is cloned first docker containers needs to be setup.
 **Laradock** is a full PHP development environment for Docker.
 It supports a variety of common services, all pre-configured to provide a ready PHP development environment.
 
-In terminal go to cloned project and enter docker folder `cd docker`.
+In terminal go to cloned project and enter docker folder 
+```
+cd docker
+```
 
 In `docker-compose.yml` docker container version is **3.5** and services will be used:
 
@@ -76,12 +79,17 @@ To install fresh workspace and build container in `docker` folder use command `d
 
 ### Bash command
 
-When container is build in `docker` folder type command `docker-compose exec workspace bash`
+When container is build in `docker` folder type command: 
+```
+docker-compose exec workspace bash
+```
 
 ### Nginx setup
 
-In `docker/nginx/sites` use command copy file 
-`cp laravel.conf.example followmovies.conf`
+In `docker/nginx/sites` use command copy file:
+```
+cp laravel.conf.example followmovies.conf
+```
 
 In `followmovies.conf` changes are: 
 - Change server name `server_name followmovies.test;`
