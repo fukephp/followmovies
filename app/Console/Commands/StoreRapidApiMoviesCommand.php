@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands;
 
+use App\Enums\RapidApiMovieList;
 use App\Models\Movie;
 use App\RapidApi\Api\MoviesDatabase;
 use Carbon\Carbon;
@@ -31,14 +32,7 @@ class StoreRapidApiMoviesCommand extends Command
         $host = env('RAPIDAPI_MOVIESDB_HOST');
         $url = 'https://' . $host . '/titles';
 
-        $lists = [
-            'most_pop_movies',
-            'top_boxoffice_200',
-            'top_boxoffice_last_weekend_10',
-            'top_rated_250',
-            'top_rated_english_250',
-            'top_rated_lowest_100'
-        ];
+        $lists = RapidApiMovieList::values();
 
         $limit = $this->ask('Number of titles per page (default: 10) -> 10 max?', 10);
         $page = $this->ask('Select page number', 1);
@@ -88,7 +82,6 @@ class StoreRapidApiMoviesCommand extends Command
                 $resultData['released_at'] = $releasedDateFromat;
 
                 try {
-                    // $movie = Movie::create($resultData);
                     $movie = Movie::firstOrCreate(
                         $resultData, ['title' => $resultData['title']]
                     );
