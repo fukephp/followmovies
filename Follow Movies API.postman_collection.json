@@ -1,0 +1,481 @@
+{
+	"info": {
+		"_postman_id": "3b38b237-1ac0-410d-8be2-86e9698ab08b",
+		"name": "Follow Movies API",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "16236017"
+	},
+	"item": [
+		{
+			"name": "Movie",
+			"item": [
+				{
+					"name": "Index",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{URL}}{{API_MOVIE_PREFIX}}?rating[eq]=9.0",
+							"host": [
+								"{{URL}}{{API_MOVIE_PREFIX}}"
+							],
+							"query": [
+								{
+									"key": "rating[eq]",
+									"value": "9.0"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Show",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{URL}}{{API_MOVIE_PREFIX}}/star-wars-episode-iv-a-new-hope",
+							"host": [
+								"{{URL}}{{API_MOVIE_PREFIX}}"
+							],
+							"path": [
+								"star-wars-episode-iv-a-new-hope"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Store",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "title",
+									"value": "Movie title lorem ispum",
+									"type": "text"
+								},
+								{
+									"key": "caption",
+									"value": "Lorem ipsum text caption",
+									"type": "text"
+								},
+								{
+									"key": "rating",
+									"value": "1.0",
+									"type": "text"
+								},
+								{
+									"key": "released_at",
+									"value": "1992-12-10",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{URL}}{{API_MOVIE_PREFIX}}",
+							"host": [
+								"{{URL}}{{API_MOVIE_PREFIX}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "title",
+									"value": "",
+									"type": "text"
+								},
+								{
+									"key": "caption",
+									"value": "",
+									"type": "text"
+								},
+								{
+									"key": "rating",
+									"value": "",
+									"type": "text"
+								},
+								{
+									"key": "released_at",
+									"value": "",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{URL}}{{API_MOVIE_PREFIX}}/the-shawshank-redemption-movie",
+							"host": [
+								"{{URL}}{{API_MOVIE_PREFIX}}"
+							],
+							"path": [
+								"the-shawshank-redemption-movie"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Destroy",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{URL}}{{API_MOVIE_PREFIX}}/movie-title",
+							"host": [
+								"{{URL}}{{API_MOVIE_PREFIX}}"
+							],
+							"path": [
+								"movie-title"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "User",
+			"item": [
+				{
+					"name": "Following movies",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{URL}}{{API_USER_PREFIX}}/favorite-movies",
+							"host": [
+								"{{URL}}{{API_USER_PREFIX}}"
+							],
+							"path": [
+								"favorite-movies"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Follow",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{URL}}{{API_USER_PREFIX}}/terminator-2-judgment-day/follow",
+							"host": [
+								"{{URL}}{{API_USER_PREFIX}}"
+							],
+							"path": [
+								"terminator-2-judgment-day",
+								"follow"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Login",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.globals.set(\"token\", pm.response.json().token);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "email",
+							"value": "vern28@example.net",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "password",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{URL}}{{API_AUTH_PREFIX}}/login",
+					"host": [
+						"{{URL}}{{API_AUTH_PREFIX}}"
+					],
+					"path": [
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Authenticate user detalis",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{URL}}{{API_AUTH_PREFIX}}/user-detalis",
+					"host": [
+						"{{URL}}{{API_AUTH_PREFIX}}"
+					],
+					"path": [
+						"user-detalis"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Register",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "email",
+							"value": "testuser@mail.com",
+							"type": "text"
+						},
+						{
+							"key": "name",
+							"value": "Test Joe",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "password",
+							"type": "text"
+						},
+						{
+							"key": "password_confirmation",
+							"value": "password",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{URL}}{{API_AUTH_PREFIX}}/register",
+					"host": [
+						"{{URL}}{{API_AUTH_PREFIX}}"
+					],
+					"path": [
+						"register"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Logout",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{URL}}{{API_AUTH_PREFIX}}/logout",
+					"host": [
+						"{{URL}}{{API_AUTH_PREFIX}}"
+					],
+					"path": [
+						"logout"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Refresh token",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.globals.set(\"token\", pm.response.json().token);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{URL}}{{API_AUTH_PREFIX}}/refresh/token",
+					"host": [
+						"{{URL}}{{API_AUTH_PREFIX}}"
+					],
+					"path": [
+						"refresh",
+						"token"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "{{token}}",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "URL",
+			"value": "http://followmovies.test"
+		},
+		{
+			"key": "API_MOVIE_PREFIX",
+			"value": "/api/movies"
+		},
+		{
+			"key": "API_USER_PREFIX",
+			"value": "/api/user"
+		},
+		{
+			"key": "API_AUTH_PREFIX",
+			"value": "/api/auth"
+		}
+	]
+}
