@@ -173,7 +173,8 @@ Dashboard view in the browser on `/request-docs/`
 ## Packages used in application
 
 - [laradock](https://laradock.io/getting-started/#Install-Laravel)
-- [rakutentech/laravel-request-docs](https://github.com/rakutentech/laravel-request-docs)
+- [rakutentech/laravel-request-docs](https://github.com/rakutentech/laravel-request-docs): v2.14
+- [archtechx/enums](https://github.com/archtechx/enums): v0.3.2
 - [cviebrock/eloquent-sluggable](https://github.com/cviebrock/eloquent-sluggable): v10.*
 - [juststeveking/http-status-code](https://github.com/JustSteveKing/http-status-code): v3.*
 - [barryvdh/laravel-ide-helper](https://github.com/barryvdh/laravel-ide-helper): v2.13
