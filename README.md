@@ -12,7 +12,7 @@
 	* [Nginx setup](#nginx-setup)
 	* [Laravel Application setup, database setup, migration, and seeds](#laravel-application-setup-database-setup-migration-and-seeds)
     * [Create new JWT secret token](#create-new-jwt-secret-token)
-    * [ApiRapid Setup and Command](#apirapid-setup-and-command)
+    * [RapidAPI Setup and Command](#rapidapi-setup-and-command)
 * [Dynamic Movie Filter API](#dynamic-movie-filter-api)
 * [Run the application tests](#run-the-application-tests)
 * [Laravel Request DOCS](#laravel-request-docs)
@@ -29,7 +29,7 @@ Main topic for this app is user can follow and filter movies. Real movies can be
 - Top 200 all time box office movies, according to boxofficemojo
 - Top 250 english movies by rating, according to imdb ranking and etc.
 
-More about command itself will be explained in [ApiRapid Setup and Command](#apirapid-setup-and-command).
+More about command itself will be explained in [RapidAPI Setup and Command](#rapidapi-setup-and-command).
 
 ## Project requirements
 
@@ -89,7 +89,7 @@ In `followmovies.conf` changes are:
 and register virtual host domain use command `sudo nano /etc/hosts` and below of file add server_name `127.0.0.1 followmovies.test`
 After changes are done restart docker container nginx. First check nginx container name it will be mostly named container-name-nginx-1. To check what containers are aviliable type command first exit bash or create new terminal tab and go to project/docker and type command `docker ps`
 
-```php
+```
 docker-compose container-name-nginx-1 restart
 ```
 
@@ -98,9 +98,9 @@ docker-compose container-name-nginx-1 restart
 When workspace bash(`docker-compose exec workspace bash`) is executed in `/var/www` type command `composer install` so vendor is avaliable for this laravel project all packages will be installed.
 
 Then in root project type command copy:
-
-    cp .env.example .env
-
+```
+cp .env.example .env
+```
 Geneate app key type command:
 
     php artisan key:generate
@@ -129,9 +129,9 @@ Set the JWTAuth secret key used to sign the tokens type command:
 
     php artisan jwt:secret
 
-### ApiRapid Setup and Command
+### RapidAPI Setup and Command
 
-In [ApiRapid](https://rapidapi.com/SAdrian/api/moviesdatabase) register as user to use free access to api for all virarty of data we now use moviesdatabase In `.env` file add api key in `RAPIDAPI_KEY={key}`
+In [RapidAPI](https://rapidapi.com/SAdrian/api/moviesdatabase) register as user to use free access to api for all virarty of data we now use moviesdatabase In `.env` file add api key in `RAPIDAPI_KEY={key}`
 `RAPIDAPI_HOST=moviesdatabase.p.rapidapi.com`
 
 Now we can use this command: 
