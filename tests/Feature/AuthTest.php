@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use App\Enums\ApiPrefix;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Testing\Fluent\AssertableJson;
@@ -23,7 +24,7 @@ class AuthTest extends TestCase
             'password' => 'password'
         ];
 
-        $response = $this->actingAs($user)->postJson(self::AUTH_API_PREFIX . '/login', $data);
+        $response = $this->actingAs($user)->postJson(ApiPrefix::AUTH_API_PREFIX() . '/login', $data);
 
         $this->hasAllAssertJson($response, ['token', 'expires_in', 'token_type']);
         $response->assertStatus(Http::OK());
@@ -46,7 +47,7 @@ class AuthTest extends TestCase
             'password_confirmation' => 'password',
         ];
 
-        $response = $this->postJson(self::AUTH_API_PREFIX . '/register', $data);
+        $response = $this->postJson(ApiPrefix::AUTH_API_PREFIX() . '/register', $data);
 
         $this->hasAllAssertJson($response, ['token', 'expires_in', 'token_type']);
         $response->assertStatus(Http::OK());
@@ -60,7 +61,7 @@ class AuthTest extends TestCase
 
         $token = $this->createToken($user);
 
-        $response = $this->actingAs($user)->postJson(self::AUTH_API_PREFIX . '/logout');
+        $response = $this->actingAs($user)->postJson(ApiPrefix::AUTH_API_PREFIX() . '/logout');
 
         $response->assertStatus(Http::OK());
     }
@@ -73,7 +74,7 @@ class AuthTest extends TestCase
 
         $token = $this->createToken($user);
 
-        $response = $this->actingAs($user)->getJson(self::AUTH_API_PREFIX . '/user-detalis');
+        $response = $this->actingAs($user)->getJson(ApiPrefix::AUTH_API_PREFIX() . '/user-detalis');
 
         $this->hasAllAssertJson($response, ['success', 'message', 'data']);
         $response->assertStatus(Http::OK());
@@ -88,7 +89,7 @@ class AuthTest extends TestCase
             'password' => 'password'
         ];
 
-        $response = $this->postJson(self::AUTH_API_PREFIX . '/login', $data);
+        $response = $this->postJson(ApiPrefix::AUTH_API_PREFIX() . '/login', $data);
 
         $response->assertJson([
             'success' => false,
@@ -103,7 +104,7 @@ class AuthTest extends TestCase
             'password' => ''
         ];
 
-        $response = $this->postJson(self::AUTH_API_PREFIX . '/login', $data);
+        $response = $this->postJson(ApiPrefix::AUTH_API_PREFIX() . '/login', $data);
 
         $response->assertStatus(Http::UNPROCESSABLE_ENTITY())
             ->assertJson(function (AssertableJson $json) use ($data) {
@@ -127,7 +128,7 @@ class AuthTest extends TestCase
             'password_confirmation' => 'password',
         ];
 
-        $response = $this->postJson(self::AUTH_API_PREFIX . '/register', $data);
+        $response = $this->postJson(ApiPrefix::AUTH_API_PREFIX() . '/register', $data);
 
         $response->assertStatus(Http::UNPROCESSABLE_ENTITY())
             ->assertJson(function (AssertableJson $json) use ($data) {

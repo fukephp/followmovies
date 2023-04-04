@@ -62,6 +62,10 @@ class StoreRapidApiMoviesCommand extends Command
         }
     }
 
+    /**
+     * @param mixed $responseRecords
+     * @return void
+     */
     protected function insertRecords($responseRecords)
     {
         if(!empty($responseRecords['results'])) {
@@ -93,7 +97,12 @@ class StoreRapidApiMoviesCommand extends Command
         }
     }
 
-    protected function previewTable(array $previewTable, $msg = '')
+    /**
+     * @param array $previewTable
+     * @param string $msg
+     * @return void
+     */
+    protected function previewTable(array $previewTable, string $msg = '')
     {
         if($msg != '')
             $this->info($msg);

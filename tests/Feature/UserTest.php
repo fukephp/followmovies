@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use App\Enums\ApiPrefix;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
@@ -19,7 +20,7 @@ class UserTest extends TestCase
         $movie = $this->createMovie();
         $user->movies()->attach($movie->id);
 
-        $response = $this->actingAs($user)->getJson(self::USER_API_PREFIX . '/favorite-movies');
+        $response = $this->actingAs($user)->getJson(ApiPrefix::USER_API_PREFIX() . '/favorite-movies');
 
         $response->assertJsonCount($user->movies()->count(), 'data.favorite_movies')
             ->assertStatus(Http::OK());
@@ -32,7 +33,7 @@ class UserTest extends TestCase
         $user = $this->createUser();
         $movie = $this->createMovie();
 
-        $response = $this->actingAs($user)->postJson(self::USER_API_PREFIX . '/' . $movie->slug . '/follow');
+        $response = $this->actingAs($user)->postJson(ApiPrefix::USER_API_PREFIX() . '/' . $movie->slug . '/follow');
 
         $response->assertStatus(Http::OK());
     }

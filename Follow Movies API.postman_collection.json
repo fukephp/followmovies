@@ -471,7 +471,7 @@
 		},
 		{
 			"key": "API_USER_PREFIX",
-			"value": "/api/user"
+			"value": "/api/users"
 		},
 		{
 			"key": "API_AUTH_PREFIX",

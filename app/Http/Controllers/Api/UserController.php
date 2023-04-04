@@ -13,6 +13,10 @@ use JustSteveKing\StatusCode\Http;
 
 class UserController extends Controller
 {
+    /**
+     * @param \Illuminate\Http\Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function favoriteMovies(Request $request): JsonResponse
     {
         $user = auth()

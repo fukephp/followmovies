@@ -9,8 +9,14 @@ use App\Filters\ApiFilter;
 
 class MoviesFilter extends ApiFilter
 {
+    /**
+     * @var array $safeParms
+     */
     protected $safeParms = [];
 
+    /**
+     * @var array $columnMap
+     */
     protected $columnMap = [];
 
     public function __construct()
